@@ -13,6 +13,7 @@ import "@wormhole-foundation/sdk-evm-ntt";
 import "@wormhole-foundation/sdk-solana-ntt";
 import { DEVNET_SOL_PRIVATE_KEY, TEST_NTT_TOKENS } from "@/constants";
 import { getEnv, getSigner } from "@/utils/helpers";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   async function handle() {
@@ -80,5 +81,9 @@ export default function Home() {
     }
   }
 
-  return <button onClick={handle}>Submit</button>;
+  return (
+    <div className="bg-primary-gradient min-h-screen">
+      <Navbar />
+    </div>
+  );
 }
