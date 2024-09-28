@@ -15,6 +15,9 @@ const config: Config = {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
       },
+      backgroundImage: {
+        'landing-bg': "url('/assets/landing-bg.svg')",
+      },
     },
   },
   plugins: [],
