@@ -15,6 +15,7 @@ import { DEVNET_SOL_PRIVATE_KEY, TEST_NTT_TOKENS } from "@/constants";
 import { getEnv, getSigner } from "@/utils/helpers";
 import Navbar from "@/components/Navbar";
 import ToolTip from "@/components/ToolTip";
+import { BackgroundBeams } from "@/components/BackgroundBeams";
 
 export default function Home() {
   async function handle() {
@@ -85,16 +86,13 @@ export default function Home() {
   return (
     <div className="bg-landing-bg">
       <div className="h-screen overflow-hidden max-h-screen relative">
-        <img
-          src="/assets/sphere.png"
-          className="absolute -bottom-12 left-0 overflow-hidden opacity-80"
-        />
+        <BackgroundBeams />
         <Navbar />
         <ToolTip />
         <div className="text-white py-4 px-4 md:px-8 text-center">
           <h1 className="text-4xl md:text-7xl font-semibold mb-4 leading-loose font-inter">
-            Take your tokens <br />
-            from Ethereum -{">"} Solana
+            Migrate your tokens <br />
+            from Ethereum to Solana
           </h1>
           <p className="text-gray-400 leading-loose text-[0.875rem] max-w-3xl mx-auto my-8 font-inter">
             Experience the future of digital transactions with our

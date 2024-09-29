@@ -2,12 +2,9 @@ import React from "react";
 
 function Navbar() {
   return (
-    <nav className="backdrop-blur-sm py-4 px-12 flex justify-between items-center">
+    <nav className="py-4 px-12 flex justify-between items-center">
       <div className="flex items-center">
-        <div className="text-white text-2xl font-bold mr-2">
-          <span className="inline-block w-6 h-6 mr-1 bg-white font-inter"></span>
-          LaunchBox
-        </div>
+        <div className="text-white text-2xl font-bold mr-2">LaunchBox</div>
       </div>
       <div className="hidden md:flex space-x-6 font-inter font-medium">
         <a href="#" className="text-white hover:text-gray-300">
