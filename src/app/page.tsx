@@ -1,13 +1,15 @@
 "use client";
 
 import { BackgroundBeams } from "@/components/BackgroundBeams";
+import { BentoDemo } from "@/components/FeaturesGrid";
 import Navbar from "@/components/Navbar";
+import SectionBtn from "@/components/SectionBtn";
 import ToolTip from "@/components/ToolTip";
 
 export default function Home() {
   return (
-    <div className="bg-landing-bg">
-      <div className="h-screen overflow-hidden max-h-screen relative">
+    <div className="bg-primary-gradient min-h-screen">
+      <div className="relative">
         <BackgroundBeams />
         <Navbar />
         <ToolTip />
@@ -26,6 +28,10 @@ export default function Home() {
             Get Started
           </button>
         </div>
+      </div>
+      <div>
+        <SectionBtn content="Our Features" />
+        <BentoDemo />
       </div>
     </div>
   );
