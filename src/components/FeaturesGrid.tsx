@@ -1,12 +1,10 @@
-import { CalendarIcon, FileTextIcon } from "@radix-ui/react-icons";
-import { BellIcon, Share2Icon, Route, PlusCircle, Coins } from "lucide-react";
+import { Coins, PlusCircle, Route, Share2Icon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { Calendar } from "@/components/ui/calendar";
-import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
-import { AnimatedListDemo } from "@/components/ui/animated-list-demo";
 import { AnimatedBeamMultipleOutputDemo } from "@/components/ui/animated-beam-multiple-outputs";
+import { AnimatedListDemo } from "@/components/ui/animated-list-demo";
+import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
 import Marquee from "@/components/ui/marquee";
+import { cn } from "@/lib/utils";
 import { AnimatedBeamSingleDemo } from "./ui/animated-beam-single-output";
 
 const files = [
@@ -114,7 +112,7 @@ const features = [
 
 export function BentoDemo() {
   return (
-    <BentoGrid className="px-24 py-8">
+    <BentoGrid className="max-w-5xl mx-auto py-8">
       {features.map((feature, idx) => (
         <BentoCard key={idx} {...feature} />
       ))}
