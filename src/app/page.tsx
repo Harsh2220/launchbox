@@ -18,7 +18,7 @@ export default function Home() {
             Migrate your tokens <br />
             from Ethereum to Solana
           </h1>
-          <p className="text-gray-400 leading-loose text-[0.875rem] max-w-3xl mx-auto my-8 font-inter">
+          <p className="text-gray-400 leading-loose text-[1rem] max-w-3xl mx-auto my-8 font-inter">
             Experience the future of digital transactions with our
             state-of-the-art blockchain technology. Our secure, decentralized
             platform ensures every transaction is transparent, immutable, and

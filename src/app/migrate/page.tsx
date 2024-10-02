@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { BackgroundBeams } from "@/components/BackgroundBeams";
-import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { NetworkBase, NetworkOptimism } from "@web3icons/react";

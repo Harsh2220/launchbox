@@ -26,7 +26,7 @@ export default function ChooseAction() {
           <h1 className="text-4xl md:text-6xl font-semibold mb-4 leading-tight font-inter">
             Choose Your Action
           </h1>
-          <p className="text-gray-400 leading-loose text-[0.875rem] max-w-3xl mx-auto my-8 font-inter">
+          <p className="text-gray-400 leading-loose text-[1rem] max-w-3xl mx-auto my-8 font-inter">
             Select whether you want to migrate an existing token or launch a new
             one.
           </p>
