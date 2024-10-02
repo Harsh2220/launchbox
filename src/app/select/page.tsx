@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const options = [
   {
@@ -18,6 +19,14 @@ const options = [
 
 export default function ChooseAction() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  const router = useRouter();
+  const onSubmit = () => {
+    if (selectedOption === 0) {
+      router.push("migrate");
+      return;
+    }
+    router.push("migrate");
+  };
 
   return (
     <div className="min-h-screen bg-primary-gradient mt-8">
@@ -35,7 +44,9 @@ export default function ChooseAction() {
               <motion.div
                 key={index}
                 className={`bg-white bg-opacity-10 p-8 rounded-xl cursor-pointer transition-all duration-300 w-[30rem] border-white  ${
-                  selectedOption === index ? "border-2" : "border-[1px] border-opacity-20"
+                  selectedOption === index
+                    ? "border-2"
+                    : "border-[1px] border-opacity-20"
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -52,6 +63,7 @@ export default function ChooseAction() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="mt-16 bg-white text-gray-900 font-semibold py-2 px-12 rounded-full text-md hover:bg-gray-200 transition duration-300 font-inter"
+              onClick={onSubmit}
             >
               Continue
             </motion.button>
