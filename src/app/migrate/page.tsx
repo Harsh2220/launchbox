@@ -86,7 +86,7 @@ export default function Migrate() {
                 {step}
               </h3>
               {index === currentStep && (
-                <div className="p-4 bg-gray-800 bg-opacity-50 rounded-lg shadow-xl">
+                <div className="p-4 rounded-lg shadow-xl">
                   {index === 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <input
