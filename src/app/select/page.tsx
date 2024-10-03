@@ -24,12 +24,12 @@ const options = [
 export default function ChooseAction() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const router = useRouter();
-  const onSubmit = () => {
-    if (selectedOption === 0) {
-      router.push("migrate");
-      return;
-    }
+  const onMigrate = () => {
     router.push("migrate");
+  };
+
+  const onCreate = () => {
+    router.push("create");
   };
 
   return (
@@ -43,12 +43,16 @@ export default function ChooseAction() {
             Select whether you want to migrate an existing token or launch a new
             one.
           </p>
-          <div className="rounded-2xl bg-[#1d1d1b] p-8 max-w-lg mx-auto">
+          <div
+            className="rounded-2xl bg-[#1d1d1b] p-8 max-w-lg mx-auto
+                shadow-[8px_8px_20px_rgba(0,0,0,0.4),8px_8px_20px_rgba(255,255,255,0.08)]
+                transition-all duration-300 ease-in-out"
+          >
             <ActionItem
               icon={<PlusIcon />}
               subtitle="Create a new token on Solana and EVM chains"
               title="Launch New Token"
-              iconBgColor="purple"
+              onClick={onCreate}
             />
             <Separator
               orientation="horizontal"
@@ -56,9 +60,9 @@ export default function ChooseAction() {
             />
             <ActionItem
               icon={<ArrowRightLeft />}
-              subtitle="Migrate Existing Token"
-              title="Transfer your EVM token to Solana"
-              iconBgColor="blue"
+              title="Migrate Existing Token"
+              subtitle="Transfer your EVM token to Solana"
+              onClick={onMigrate}
             />
           </div>
         </div>

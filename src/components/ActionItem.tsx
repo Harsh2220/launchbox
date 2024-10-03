@@ -5,10 +5,15 @@ interface ActionItemProps {
   icon: React.JSX.Element;
   title: string;
   subtitle: string;
-  iconBgColor: string;
+  onClick: () => void;
 }
 
-function ActionItem({ icon, subtitle, title, iconBgColor }: ActionItemProps) {
+const ActionItem: React.FC<ActionItemProps> = ({
+  icon,
+  subtitle,
+  title,
+  onClick,
+}) => {
   return (
     <div className="flex flex-row justify-between items-center">
       <div className="flex flex-row justify-center gap-4">
@@ -30,11 +35,12 @@ function ActionItem({ icon, subtitle, title, iconBgColor }: ActionItemProps) {
                    hover:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-2px_rgba(0,0,0,0.05),inset_0_-4px_6px_rgba(0,0,0,0.05),0_0_15px_rgba(255,255,255,0.3)]
                    transition-all duration-300 ease-in-out
                    hover:translate-y-[-2px] hover:bg-opacity-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+        onClick={onClick}
       >
         <MoveRight className="text-black font-bold" />
       </button>
     </div>
   );
-}
+};
 
 export default ActionItem;
