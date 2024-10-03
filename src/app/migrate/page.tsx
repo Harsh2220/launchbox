@@ -4,6 +4,13 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { NetworkBase, NetworkOptimism } from "@web3icons/react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const steps = ["Token Details", "Migration Setup", "Confirmation"];
 const hubChains = [
@@ -95,7 +102,7 @@ export default function Migrate() {
                         placeholder="Token Name"
                         value={formData.token_name}
                         onChange={handleInputChange}
-                        className="w-full p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        className="w-full h-10 px-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         required
                       />
                       <input
@@ -104,7 +111,7 @@ export default function Migrate() {
                         placeholder="Symbol"
                         value={formData.symbol}
                         onChange={handleInputChange}
-                        className="w-full p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        className="w-full h-10 p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         required
                       />
                       <input
@@ -113,30 +120,31 @@ export default function Migrate() {
                         placeholder="Image URL"
                         value={formData.image_url}
                         onChange={handleInputChange}
-                        className="w-full p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        className="w-full h-10 p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
                       />
 
-                      <select
-                        name="hub_chain"
+                      <Select
+                        // onValueChange={handleHubChainChange}
                         value={formData.hub_chain}
-                        onChange={handleInputChange}
-                        className="w-full p-3 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        required
                       >
-                        <option value="">Select Hub Chain</option>
-                        {hubChains.map((chain) => (
-                          <option key={chain.id} value={chain.id}>
-                            {chain.name}
-                          </option>
-                        ))}
-                      </select>
+                        <SelectTrigger className="w-full p-3 rounded-lg bg-white text-gray-500 text-md border-gray-300 focus:ring-2 focus:ring-gray-400 focus:border-transparent">
+                          <SelectValue placeholder="Select Hub Chain" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white text-gray-900">
+                          {hubChains.map((chain) => (
+                            <SelectItem key={chain.id} value={chain.id}>
+                              {chain.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <input
                         type="text"
                         name="new_owner"
                         placeholder="New Owner Address"
                         value={formData.new_owner}
                         onChange={handleInputChange}
-                        className="w-full p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        className="w-full h-10 p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         required
                       />
                     </div>
