@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, Transition } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { NetworkBase, NetworkOptimism } from "@web3icons/react";
 import {
@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { BookImage, DollarSign, UserRound, Wallet } from "lucide-react";
 
 const steps = ["Token Details", "Migration Setup", "Confirmation"];
 const hubChains = [
@@ -66,12 +67,25 @@ export default function Migrate() {
       // Implement your submission logic here
     }
   };
+  const fadeVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
+  const fadeTransition = {
+    duration: 0.5,
+    ease: [0.4, 0.0, 0.2, 1],
+  };
 
   return (
     <div className="min-h-screen bg-primary-grad">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-semibold mb-12 text-white text-center">
-          Migrate Your Token
+        <h1 className="text-3xl md:text-4xl font-semibold text-white text-center mt-4">
+          Migrate your token
+        </h1>
+        <h1 className="text-md md:text-md font-medium mb-12 text-white text-center mt-4 opacity-60 max-w-md mx-auto">
+          Make an entry into the solana ecosystem by migrating your token from
+          any evm chain to solana
         </h1>
         <ol className="relative border-l border-gray-600 space-y-12">
           {steps.map((step, index) => (
@@ -92,102 +106,126 @@ export default function Migrate() {
               >
                 {step}
               </h3>
-              {index === currentStep && (
-                <div className="p-4 rounded-lg shadow-xl">
-                  {index === 0 && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <input
-                        type="text"
-                        name="token_name"
-                        placeholder="Token Name"
-                        value={formData.token_name}
-                        onChange={handleInputChange}
-                        className="w-full h-10 px-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        required
-                      />
-                      <input
-                        type="text"
-                        name="symbol"
-                        placeholder="Symbol"
-                        value={formData.symbol}
-                        onChange={handleInputChange}
-                        className="w-full h-10 p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        required
-                      />
-                      <input
-                        type="text"
-                        name="image_url"
-                        placeholder="Image URL"
-                        value={formData.image_url}
-                        onChange={handleInputChange}
-                        className="w-full h-10 p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                      />
+              <AnimatePresence mode="wait">
+                {index === currentStep && (
+                  <motion.div
+                    key={index}
+                    initial="hidden"
+                    animate="visible"
+                    variants={fadeVariants}
+                    transition={fadeTransition}
+                    className="p-4 rounded-lg shadow-xl"
+                  >
+                    {index === 0 && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="token_name"
+                            placeholder="Token Name"
+                            value={formData.token_name}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full h-12 px-6 rounded-3xl bg-white text-gray-900 placeholder-gray-600 text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                          />
+                          <UserRound className="absolute right-6 top-3 h-6 w-6 text-gray-600" />
+                        </div>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="symbol"
+                            placeholder="Symbol"
+                            value={formData.symbol}
+                            onChange={handleInputChange}
+                            className="w-full h-12 px-6 rounded-3xl bg-white text-gray-900 placeholder-gray-600 text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            required
+                          />
+                          <DollarSign className="absolute right-6 top-3 h-6 w-6 text-gray-600" />
+                        </div>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="image_url"
+                            placeholder="Image URL"
+                            value={formData.image_url}
+                            onChange={handleInputChange}
+                            className="w-full h-12 px-6 rounded-3xl bg-white text-gray-900 placeholder-gray-600 text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                          />
+                          <BookImage className="absolute right-6 top-3 h-6 w-6 text-gray-600" />
+                        </div>
 
-                      <Select
-                        // onValueChange={handleHubChainChange}
-                        value={formData.hub_chain}
-                      >
-                        <SelectTrigger className="w-full p-3 rounded-lg bg-white text-gray-500 text-md border-gray-300 focus:ring-2 focus:ring-gray-400 focus:border-transparent">
-                          <SelectValue placeholder="Select Hub Chain" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white text-gray-900">
-                          {hubChains.map((chain) => (
-                            <SelectItem key={chain.id} value={chain.id}>
-                              {chain.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <input
-                        type="text"
-                        name="new_owner"
-                        placeholder="New Owner Address"
-                        value={formData.new_owner}
-                        onChange={handleInputChange}
-                        className="w-full h-10 p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400"
-                        required
-                      />
-                    </div>
-                  )}
-                  {index === 1 && (
-                    <>
-                      <input
-                        type="text"
-                        name="tokenAddress"
-                        placeholder="Token Address"
-                        value={formData.tokenAddress}
-                        onChange={handleInputChange}
-                        className="w-full p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 mb-4"
-                        required
-                      />
-                      <div className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          name="isOneWay"
-                          checked={formData.isOneWay}
-                          onChange={handleInputChange}
-                          className="form-checkbox h-5 w-5 text-gray-600"
-                        />
-                        <label className="text-white">One-way Migration</label>
+                        <Select
+                          // onValueChange={handleHubChainChange}
+                          value={formData.hub_chain}
+                        >
+                          <SelectTrigger className="w-full h-12 px-6 rounded-3xl bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 text-lg text-gray-600">
+                            <SelectValue placeholder="Select Hub Chain" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white text-gray-900">
+                            {hubChains.map((chain) => (
+                              <SelectItem key={chain.id} value={chain.id}>
+                                {chain.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="new_owner"
+                            placeholder="New Owner Address"
+                            value={formData.new_owner}
+                            onChange={handleInputChange}
+                            className="w-full h-12 px-6 rounded-3xl bg-white text-gray-900 placeholder-gray-600 text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            required
+                          />
+                          <Wallet className="absolute right-6 top-3 h-6 w-6 text-gray-600" />
+                        </div>
                       </div>
-                    </>
-                  )}
-                  {index === 2 && (
-                    <div className="text-white">
-                      <h2 className="text-xl mb-4">Migration Summary</h2>
-                      <ul className="list-disc list-inside space-y-2">
-                        <li>Token Name: {formData.token_name}</li>
-                        <li>Symbol: {formData.symbol}</li>
-                        <li>Hub Chain: {formData.hub_chain}</li>
-                        <li>Token Address: {formData.tokenAddress}</li>
-                        <li>
-                          One-way Migration: {formData.isOneWay ? "Yes" : "No"}
-                        </li>
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
+                    )}
+                    {index === 1 && (
+                      <>
+                        <input
+                          type="text"
+                          name="tokenAddress"
+                          placeholder="Token Address"
+                          value={formData.tokenAddress}
+                          onChange={handleInputChange}
+                          className="w-full p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 mb-4"
+                          required
+                        />
+                        <div className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            name="isOneWay"
+                            checked={formData.isOneWay}
+                            onChange={handleInputChange}
+                            className="form-checkbox h-5 w-5 text-gray-600"
+                          />
+                          <label className="text-white">
+                            One-way Migration
+                          </label>
+                        </div>
+                      </>
+                    )}
+                    {index === 2 && (
+                      <div className="text-white">
+                        <h2 className="text-xl mb-4">Migration Summary</h2>
+                        <ul className="list-disc list-inside space-y-2">
+                          <li>Token Name: {formData.token_name}</li>
+                          <li>Symbol: {formData.symbol}</li>
+                          <li>Hub Chain: {formData.hub_chain}</li>
+                          <li>Token Address: {formData.tokenAddress}</li>
+                          <li>
+                            One-way Migration:{" "}
+                            {formData.isOneWay ? "Yes" : "No"}
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </li>
           ))}
         </ol>
