@@ -5,9 +5,17 @@ import { BentoDemo } from "@/components/FeaturesGrid";
 import Navbar from "@/components/Navbar";
 import SectionBtn from "@/components/SectionBtn";
 import ToolTip from "@/components/ToolTip";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+  const navigateToActions = () => {
+    console.log("got the call");
+
+    router.push("/select");
+  };
   return (
     <div className="min-h-screen bg-primary-gradient ">
       <div className="relative pb-40">
@@ -24,11 +32,12 @@ export default function Home() {
             platform ensures every transaction is transparent, immutable, and
             protected against fraud.
           </p>
-          <Link href={"/select"}>
-            <button className="bg-white text-gray-900 font-semibold py-2 px-12 rounded-full text-md hover:bg-gray-200 transition duration-300 font-inter">
-              Get Started
-            </button>
-          </Link>
+          <button
+            className="bg-white text-gray-900 font-semibold py-2 px-12 rounded-full text-md hover:bg-gray-200 transition duration-300 font-inter"
+            onClick={navigateToActions}
+          >
+            Get Started
+          </button>
         </div>
       </div>
       <div>
