@@ -12,6 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { BookImage, DollarSign, UserRound, Wallet } from "lucide-react";
+import { useAppKit } from "@reown/appkit/react";
+import { useAccount } from "wagmi";
 
 const steps = ["Token Details", "Migration Setup", "Confirmation"];
 const hubChains = [
@@ -46,6 +48,9 @@ export default function Migrate() {
   });
   const router = useRouter();
 
+  const { open, close } = useAppKit();
+  const { isConnected } = useAccount();
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -59,6 +64,10 @@ export default function Migrate() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isConnected) {
+      open();
+      return;
+    }
     if (currentStep < 2) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -247,7 +256,11 @@ export default function Migrate() {
               className="bg-gray-100 text-gray-900 font-semibold py-2 px-6 rounded-full hover:bg-white transition duration-300 ml-auto"
               onClick={handleSubmit}
             >
-              {currentStep === 1 ? "Start Migration" : "Next"}
+              {currentStep === 1
+                ? "Start Migration"
+                : isConnected
+                ? "Next"
+                : "Connect Wallet"}
             </motion.button>
           ) : (
             <motion.button

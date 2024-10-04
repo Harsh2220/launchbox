@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/Navbar";
+import { headers } from "next/headers";
+import AppKitProvider from "@/lib/context/AppKitProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -55,19 +57,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookies = headers().get("cookie");
   return (
     <html lang="en">
-      <body
-        className={`${sfPro.className} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          disableTransitionOnChange
-        >
-          <Navbar />
-          {children}
-        </ThemeProvider>
+      <body className={`${sfPro.className} antialiased`}>
+        <AppKitProvider cookies={cookies}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            disableTransitionOnChange
+          >
+            <Navbar />
+            {children}
+          </ThemeProvider>
+        </AppKitProvider>
       </body>
     </html>
   );
