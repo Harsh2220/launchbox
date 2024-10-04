@@ -1,36 +1,22 @@
+import Link from "next/link";
 import React from "react";
 
 function Navbar() {
   return (
     <nav className="py-4 px-12 flex justify-between items-center">
       <a className="flex items-center" href="/">
-        <div className="text-white text-2xl font-bold mr-2">LaunchBox</div>
+        <img src="/assets/Logo.png" className="h-8 w-8 rounded-sm mr-2" />
+        <div className="text-white text-2xl font-bold">LaunchBox</div>
       </a>
-      <div className="hidden md:flex space-x-6 font-inter font-medium">
-        <a href="#" className="text-white hover:text-gray-300">
-          Home
-        </a>
-        <a href="#" className="text-gray-400 hover:text-gray-300">
-          Technology
-        </a>
-        <a href="#" className="text-gray-400 hover:text-gray-300">
-          Features
-        </a>
-        <a href="#" className="text-gray-400 hover:text-gray-300">
-          Pricing
-        </a>
-        <a href="#" className="text-gray-400 hover:text-gray-300">
-          FAQ
-        </a>
-      </div>
-      {/* <Link href={"/select"}>
+
+      <Link href={"/select"}>
         <button className="px-4 py-3 text-gray-300 rounded-xl flex items-center space-x-2 overflow-hidden bg-[#222320] border-white border-[0.1px] border-opacity-20 bg-opacity-95">
           <span className="relative z-10 text-sm font-medium font-inter">
-            Get Started
+            Launch It
           </span>
         </button>
-      </Link> */}
-      <w3m-button />
+      </Link>
+      {/* <w3m-button /> */}
     </nav>
   );
 }

@@ -20,21 +20,21 @@ export default function Home() {
         <ToolTip />
         <div className="text-white py-4 px-4 md:px-8 text-center">
           <h1 className="text-4xl md:text-7xl font-semibold mb-4 leading-loose font-inter">
-            Migrate your tokens <br />
-            from Ethereum to Solana
+            Your Token Gateway to Solana
+            <br />
+            and Your Token Toolkit
           </h1>
-          <p className="text-gray-400 leading-loose text-[1rem] max-w-3xl mx-auto my-8 font-inter">
-            Experience the future of digital transactions with our
-            state-of-the-art blockchain technology. Our secure, decentralized
-            platform ensures every transaction is transparent, immutable, and
-            protected against fraud.
+          <p className="text-gray-400 leading-loose text-[1rem] max-w-2xl mx-auto my-8 font-inter">
+            ⁠A toolkit to launch any kind of token across various chains without
+            liquidity fragmentation, losing token ownership, or giving up the
+            control over token supply and minting
           </p>
-          <button
+          {/* <button
             className="bg-white text-gray-900 font-semibold py-2 px-12 rounded-full text-md hover:bg-gray-200 transition duration-300 font-inter"
             onClick={navigateToActions}
           >
             Get Started
-          </button>
+          </button> */}
         </div>
       </div>
       <div>
