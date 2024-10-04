@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AnimatePresence, motion, Transition } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { NetworkBase, NetworkOptimism } from "@web3icons/react";
 import {
@@ -48,7 +48,7 @@ export default function Migrate() {
   });
   const router = useRouter();
 
-  const { open, close } = useAppKit();
+  const { open } = useAppKit();
   const { isConnected } = useAccount();
 
   const handleInputChange = (

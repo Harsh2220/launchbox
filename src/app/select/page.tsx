@@ -1,28 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { ArrowRightLeft, MoveRight, Plus, PlusIcon } from "lucide-react";
+import { ArrowRightLeft, PlusIcon } from "lucide-react";
 import ActionItem from "@/components/ActionItem";
 import { Separator } from "@/components/ui/separator";
 
-const options = [
-  {
-    title: "Migrate Existing Token",
-    description: "Transfer your EVM token to Solana",
-    icon: "🔄",
-  },
-  {
-    title: "Launch New Token",
-    description: "Create a new token on Solana and EVM chains",
-    icon: "🚀",
-  },
-];
-
 export default function ChooseAction() {
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const router = useRouter();
   const onMigrate = () => {
     router.push("migrate");

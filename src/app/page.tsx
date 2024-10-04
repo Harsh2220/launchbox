@@ -2,11 +2,8 @@
 
 import { BackgroundBeams } from "@/components/BackgroundBeams";
 import { BentoDemo } from "@/components/FeaturesGrid";
-import Navbar from "@/components/Navbar";
 import SectionBtn from "@/components/SectionBtn";
 import ToolTip from "@/components/ToolTip";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Home() {

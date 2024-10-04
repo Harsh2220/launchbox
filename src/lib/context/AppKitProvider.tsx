@@ -2,15 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAppKit } from "@reown/appkit/react";
-import {
-  mainnet,
-  arbitrum,
-  avalanche,
-  base,
-  optimism,
-  polygon,
-  baseSepolia,
-} from "@reown/appkit/networks";
+import { mainnet, baseSepolia } from "@reown/appkit/networks";
 import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
 import { projectId, wagmiAdapter } from "../walletconfig";

@@ -7,32 +7,11 @@ import Marquee from "@/components/ui/marquee";
 import { cn } from "@/lib/utils";
 import { AnimatedBeamSingleDemo } from "./ui/animated-beam-single-output";
 
-const files = [
-  {
-    name: "bitcoin.pdf",
-    body: "Bitcoin is a cryptocurrency invented in 2008 by an unknown person or group of people using the name Satoshi Nakamoto.",
-  },
-  {
-    name: "finances.xlsx",
-    body: "A spreadsheet or worksheet is a file made of rows and columns that help sort data, arrange data easily, and calculate numerical data.",
-  },
-  {
-    name: "logo.svg",
-    body: "Scalable Vector Graphics is an Extensible Markup Language-based vector image format for two-dimensional graphics with support for interactivity and animation.",
-  },
-  {
-    name: "keys.gpg",
-    body: "GPG keys are used to encrypt and decrypt email, files, directories, and whole disk partitions and to authenticate messages.",
-  },
-  {
-    name: "seed.txt",
-    body: "A seed phrase, seed recovery phrase or backup seed phrase is a list of words which store all the information needed to recover Bitcoin funds on-chain.",
-  },
-];
-
 const features = [
   {
-    Icon: PlusCircle,
+    Icon: (
+      <PlusCircle className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+    ),
     name: "Minting New Tokens",
     description:
       "Create and launch new tokens directly on the Solana blockchain",
@@ -75,9 +54,10 @@ const features = [
       </Marquee>
     ),
   },
-  ,
   {
-    Icon: Route,
+    Icon: (
+      <Route className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+    ),
     name: "Native Bridge",
     description:
       "Transfer your tokens from etherum to solana natively without any bridging or high slippage",
@@ -89,7 +69,9 @@ const features = [
     ),
   },
   {
-    Icon: Share2Icon,
+    Icon: (
+      <Share2Icon className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+    ),
     name: "Migrations",
     description: "We support migration from any EVM chains to Solana",
     href: "#",
@@ -100,7 +82,9 @@ const features = [
     ),
   },
   {
-    Icon: Coins,
+    Icon: (
+      <Coins className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+    ),
     name: "Entry to solana",
     description: "Seamlessly deploy your EVM tokens to Solana",
     href: "#",
