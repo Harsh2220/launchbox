@@ -162,7 +162,6 @@ export default function Migrate() {
                           />
                           <BookImage className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
-
                         <Select
                           // onValueChange={handleHubChainChange}
                           value={formData.hub_chain}
@@ -178,18 +177,6 @@ export default function Migrate() {
                             ))}
                           </SelectContent>
                         </Select>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            name="new_owner"
-                            placeholder="New Owner Address"
-                            value={formData.new_owner}
-                            onChange={handleInputChange}
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
-                            required
-                          />
-                          <Wallet className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
-                        </div>
                       </div>
                     )}
                     {index === 1 && (

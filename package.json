@@ -22,6 +22,7 @@
     "@wormhole-foundation/sdk-evm-ntt": "^0.2.0",
     "@wormhole-foundation/sdk-route-ntt": "^0.2.0",
     "@wormhole-foundation/sdk-solana-ntt": "^0.2.0",
+    "@wormhole-foundation/wormhole-connect": "^0.3.21",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
