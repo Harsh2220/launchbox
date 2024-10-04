@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React from "react";
 
 function Navbar() {
@@ -24,13 +23,14 @@ function Navbar() {
           FAQ
         </a>
       </div>
-      <Link href={"/select"}>
+      {/* <Link href={"/select"}>
         <button className="px-4 py-3 text-gray-300 rounded-xl flex items-center space-x-2 overflow-hidden bg-[#222320] border-white border-[0.1px] border-opacity-20 bg-opacity-95">
           <span className="relative z-10 text-sm font-medium font-inter">
             Get Started
           </span>
         </button>
-      </Link>
+      </Link> */}
+      <w3m-button />
     </nav>
   );
 }
