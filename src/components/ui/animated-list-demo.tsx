@@ -6,7 +6,6 @@ import React from "react";
 import {
   NetworkSolana,
   NetworkEthereum,
-  IconComponentProps,
   NetworkOptimism,
   NetworkArbitrumOne,
 } from "@web3icons/react";
