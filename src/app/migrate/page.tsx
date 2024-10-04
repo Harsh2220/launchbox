@@ -126,9 +126,9 @@ export default function Migrate() {
                             value={formData.token_name}
                             onChange={handleInputChange}
                             required
-                            className="w-full h-12 px-6 rounded-3xl bg-white text-gray-900 placeholder-gray-600 text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                           />
-                          <UserRound className="absolute right-6 top-3 h-6 w-6 text-gray-600" />
+                          <UserRound className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
                         <div className="relative">
                           <input
@@ -137,10 +137,10 @@ export default function Migrate() {
                             placeholder="Symbol"
                             value={formData.symbol}
                             onChange={handleInputChange}
-                            className="w-full h-12 px-6 rounded-3xl bg-white text-gray-900 placeholder-gray-600 text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                             required
                           />
-                          <DollarSign className="absolute right-6 top-3 h-6 w-6 text-gray-600" />
+                          <DollarSign className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
                         <div className="relative">
                           <input
@@ -149,16 +149,16 @@ export default function Migrate() {
                             placeholder="Image URL"
                             value={formData.image_url}
                             onChange={handleInputChange}
-                            className="w-full h-12 px-6 rounded-3xl bg-white text-gray-900 placeholder-gray-600 text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                           />
-                          <BookImage className="absolute right-6 top-3 h-6 w-6 text-gray-600" />
+                          <BookImage className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
 
                         <Select
                           // onValueChange={handleHubChainChange}
                           value={formData.hub_chain}
                         >
-                          <SelectTrigger className="w-full h-12 px-6 rounded-3xl bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 text-lg text-gray-600">
+                          <SelectTrigger className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-[#99A3AF] placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400">
                             <SelectValue placeholder="Select Hub Chain" />
                           </SelectTrigger>
                           <SelectContent className="bg-white text-gray-900">
@@ -176,10 +176,10 @@ export default function Migrate() {
                             placeholder="New Owner Address"
                             value={formData.new_owner}
                             onChange={handleInputChange}
-                            className="w-full h-12 px-6 rounded-3xl bg-white text-gray-900 placeholder-gray-600 text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                             required
                           />
-                          <Wallet className="absolute right-6 top-3 h-6 w-6 text-gray-600" />
+                          <Wallet className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
                       </div>
                     )}
@@ -191,10 +191,10 @@ export default function Migrate() {
                           placeholder="Token Address"
                           value={formData.tokenAddress}
                           onChange={handleInputChange}
-                          className="w-full p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-400 mb-4"
+                          className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                           required
                         />
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 mt-2">
                           <input
                             type="checkbox"
                             name="isOneWay"
@@ -257,7 +257,7 @@ export default function Migrate() {
               onClick={() => {
                 // Handle final submission
                 console.log("Final submission:", formData);
-                // Implement your submission logic here
+
                 router.push("/");
               }}
             >
