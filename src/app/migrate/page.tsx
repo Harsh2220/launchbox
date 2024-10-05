@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { NetworkBase, NetworkOptimism } from "@web3icons/react";
@@ -15,11 +15,16 @@ import { BookImage, DollarSign, UserRound, Wallet } from "lucide-react";
 import { useAppKit } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 import { Slider } from "@/components/ui/slider";
+import registerMigration from "@/utils/api/registerMigration";
+import initiateMigrate from "@/utils/api/migrate";
+import getStatus from "@/utils/api/getStatus";
+import { LoadingStates } from "@/utils/constants";
+import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 
-const steps = ["Token Details", "Migration Setup", "Confirmation"];
+const steps = ["Token Details", "Migration Setup", "Status"];
 const hubChains = [
-  { id: "base-sepolia", name: "Base Sepolia", icon: NetworkBase },
-  { id: "optimism-sepolia", name: "Optimism Sepolia", icon: NetworkOptimism },
+  { id: "BaseSepolia", name: "Base Sepolia", icon: NetworkBase },
+  { id: "OptimismSepolia", name: "Optimism Sepolia", icon: NetworkOptimism },
 ];
 
 interface FormData {
@@ -32,6 +37,7 @@ interface FormData {
   new_owner: string;
   tokenAddress: string;
   outboundSupply: string;
+  solPubKey: string;
   isOneWay: boolean;
 }
 
@@ -48,11 +54,49 @@ export default function Migrate() {
     tokenAddress: "",
     outboundSupply: "50",
     isOneWay: false,
+    solPubKey: "",
   });
+  const [tokenId, setTokenId] = useState("");
+  const [currentState, setCurrentState] = useState(0);
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const router = useRouter();
 
   const { open } = useAppKit();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+
+  const getStateIndexFromStatusText = (statusText: string) => {
+    return LoadingStates.findIndex((state) => state.text === statusText);
+  };
+
+  const pollStatus = async () => {
+    try {
+      console.log("here in poll status");
+
+      const response = await getStatus(tokenId);
+      console.log("resposne from get status", response);
+
+      const newStateIndex = getStateIndexFromStatusText(response.status);
+
+      if (newStateIndex !== -1) {
+        setCurrentState(newStateIndex);
+
+        // If we've reached the last state, stop polling
+        if (newStateIndex === LoadingStates.length - 1) {
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+          }
+        }
+      }
+    } catch (error) {
+      console.log("Error polling status:", error);
+    }
+  };
+
+  const startPolling = () => {
+    setCurrentState(0); // Reset to initial state
+    intervalRef.current = setInterval(pollStatus, 1000); // Poll every 5 seconds
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -72,18 +116,47 @@ export default function Migrate() {
     } as React.ChangeEvent<HTMLInputElement>);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSelectChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      hub_chain: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isConnected) {
       open();
       return;
     }
-    if (currentStep < 2) {
+    if (currentStep < 1) {
+      console.log("form data", formData);
+      const response = await registerMigration({
+        image_url: formData.image_url,
+        new_owner: address as `0x${string}`,
+        symbol: formData.symbol,
+        token_name: formData.token_name,
+        hub_chain: formData.hub_chain,
+        decimals: parseInt(formData.decimals),
+        init_supply: parseInt(formData.init_supply),
+      });
+      console.log("tokenId", response.migrationId);
+      setTokenId(response.migrationId);
       setCurrentStep(currentStep + 1);
     } else {
       // Handle final submission
+      await initiateMigrate({
+        evmOwnerAddress: address as `0x${string}`,
+        hubChain: formData.hub_chain,
+        isOneWay: true,
+        migrationId: tokenId,
+        name: formData.token_name,
+        solOwnerPubKey: formData.solPubKey,
+        tokenAddress: formData.tokenAddress,
+      });
       console.log("Final form data:", formData);
-      // Implement your submission logic here
+      setCurrentStep(currentStep + 1);
+      startPolling();
     }
   };
   const fadeVariants = {
@@ -145,7 +218,7 @@ export default function Migrate() {
                             value={formData.token_name}
                             onChange={handleInputChange}
                             required
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                           />
                           <UserRound className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
@@ -156,7 +229,7 @@ export default function Migrate() {
                             placeholder="Symbol"
                             value={formData.symbol}
                             onChange={handleInputChange}
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                             required
                           />
                           <DollarSign className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
@@ -168,12 +241,12 @@ export default function Migrate() {
                             placeholder="Image URL"
                             value={formData.image_url}
                             onChange={handleInputChange}
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                           />
                           <BookImage className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
                         <Select
-                          // onValueChange={handleHubChainChange}
+                          onValueChange={handleSelectChange}
                           value={formData.hub_chain}
                         >
                           <SelectTrigger className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-[#99A3AF] placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400">
@@ -187,6 +260,24 @@ export default function Migrate() {
                             ))}
                           </SelectContent>
                         </Select>
+                        <input
+                          type="text"
+                          name="decimals"
+                          placeholder="Decimals"
+                          value={formData.decimals}
+                          onChange={handleInputChange}
+                          className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                          required
+                        />
+                        <input
+                          type="text"
+                          name="init_supply"
+                          placeholder="Initial Supply"
+                          value={formData.init_supply}
+                          onChange={handleInputChange}
+                          className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                          required
+                        />
                       </div>
                     )}
                     {index === 1 && (
@@ -197,7 +288,16 @@ export default function Migrate() {
                           placeholder="Token Address"
                           value={formData.tokenAddress}
                           onChange={handleInputChange}
-                          className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                          className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400 mb-4"
+                          required
+                        />
+                        <input
+                          type="text"
+                          name="solPubKey"
+                          placeholder="Solana Public Key"
+                          value={formData.solPubKey}
+                          onChange={handleInputChange}
+                          className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                           required
                         />
                         {!formData.isOneWay && (
@@ -264,17 +364,11 @@ export default function Migrate() {
                     )}
                     {index === 2 && (
                       <div className="text-white">
-                        <h2 className="text-xl mb-4">Migration Summary</h2>
-                        <ul className="list-disc list-inside space-y-2">
-                          <li>Token Name: {formData.token_name}</li>
-                          <li>Symbol: {formData.symbol}</li>
-                          <li>Hub Chain: {formData.hub_chain}</li>
-                          <li>Token Address: {formData.tokenAddress}</li>
-                          <li>
-                            One-way Migration:{" "}
-                            {formData.isOneWay ? "Yes" : "No"}
-                          </li>
-                        </ul>
+                        <MultiStepLoader
+                          loadingStates={LoadingStates}
+                          loading
+                          loadingState={currentState}
+                        />
                       </div>
                     )}
                   </motion.div>
@@ -308,19 +402,7 @@ export default function Migrate() {
                 : "Connect Wallet"}
             </motion.button>
           ) : (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gray-100 text-gray-900 font-semibold py-2 px-6 rounded-full hover:bg-white transition duration-300 ml-auto"
-              onClick={() => {
-                // Handle final submission
-                console.log("Final submission:", formData);
-
-                router.push("/");
-              }}
-            >
-              Confirm Migration
-            </motion.button>
+            <></>
           )}
         </div>
       </div>

@@ -1,8 +1,20 @@
-export default async function Migrate(request: MigrateRequest) {
-    const res = await fetch("/api/migrate", {
-        method: "POST",
-        body: JSON.stringify(request)
-    })
-    const data = await res.json()
-    return data
+export default async function initiateMigrate(request: MigrateRequest) {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/migrate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Error: ${res.statusText}`);
+    }
+    const json = await res.json();
+
+    return json;
+  } catch (error) {
+    console.log(error);
+  }
 }

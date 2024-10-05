@@ -5,7 +5,7 @@ interface RegisterMigrationRequest {
   image_url: string;
   decimals: number;
   init_supply: number;
-  hub_chain: number;
+  hub_chain: string;
   new_owner: string;
 }
 
@@ -13,7 +13,7 @@ interface MigrateRequest {
   migrationId: string;
   tokenAddress: string;
   name: string;
-  hubChain: number;
+  hubChain: string;
   isOneWay: boolean;
   solOwnerPubKey: string;
   evmOwnerAddress: string;
