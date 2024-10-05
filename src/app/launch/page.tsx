@@ -13,17 +13,20 @@ import { BookImage, DollarSign, UserRound, Wallet } from "lucide-react";
 import { useAppKit } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 import { Checkbox } from "@/components/ui/checkbox";
+import registerNewToken from "@/utils/api/registerNewToken";
+import { log } from "console";
+import CreateMultichainToken from "@/utils/api/createMultichainToken";
 
 const steps = ["Token Details", "Deployment Chains", "Confirmation"];
 const deploymentChains = [
-  { id: "optimism-sepolia", name: "Optimism Sepolia", icon: NetworkOptimism },
+  { id: "OptimismSepolia", name: "Optimism Sepolia", icon: NetworkOptimism },
   {
-    id: "arbitrum-sepolia",
+    id: "ArbitrumSepolia",
     name: "Arbitrum Sepolia",
     icon: NetworkArbitrumOne,
   },
-  { id: "base-sepolia", name: "Base Sepolia", icon: NetworkBase },
-  { id: "solana", name: "Solana", icon: NetworkSolana },
+  { id: "BaseSepolia", name: "Base Sepolia", icon: NetworkBase },
+  // { id: "Solana", name: "Solana", icon: NetworkSolana },
 ];
 
 interface FormData {
@@ -48,7 +51,8 @@ export default function LaunchMultiChainToken() {
   const router = useRouter();
 
   const { open } = useAppKit();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
+  const [tokenId, setTokenId] = useState("");
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -61,6 +65,8 @@ export default function LaunchMultiChainToken() {
   };
 
   const handleChainSelection = (chainId: string) => {
+    console.log("got this chain", chainId);
+
     setFormData((prev) => {
       const updatedChains = prev.deployment_chains.includes(chainId)
         ? prev.deployment_chains.filter((id) => id !== chainId)
@@ -69,13 +75,34 @@ export default function LaunchMultiChainToken() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isConnected) {
       open();
       return;
     }
-    if (currentStep < 2) {
+    if (currentStep === 0) {
+      console.log("form data", formData);
+      const response = await registerNewToken({
+        image_url: formData.image_url,
+        new_owner: address as `0x${string}`,
+        symbol: formData.symbol,
+        token_name: formData.token_name,
+      });
+      console.log("tokenId", response.token_id);
+      setTokenId(response.token_id);
+
+      setCurrentStep(currentStep + 1);
+    } else if (currentStep === 1) {
+      console.log("tokenId", tokenId);
+      console.log("chains", formData.deployment_chains);
+
+      // CreateMultichainToken({
+      //   token_id: tokenId,
+      //   chainNames: formData.deployment_chains,
+      //   tokenName: formData.token_name,
+      //   tokenSymbol: formData.symbol,
+      // });
       setCurrentStep(currentStep + 1);
     } else {
       // Handle final submission
@@ -142,7 +169,7 @@ export default function LaunchMultiChainToken() {
                             value={formData.token_name}
                             onChange={handleInputChange}
                             required
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                           />
                           <UserRound className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
@@ -153,7 +180,7 @@ export default function LaunchMultiChainToken() {
                             placeholder="Symbol"
                             value={formData.symbol}
                             onChange={handleInputChange}
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                             required
                           />
                           <DollarSign className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
@@ -165,7 +192,7 @@ export default function LaunchMultiChainToken() {
                             placeholder="Image URL"
                             value={formData.image_url}
                             onChange={handleInputChange}
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                           />
                           <BookImage className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
@@ -176,7 +203,7 @@ export default function LaunchMultiChainToken() {
                             placeholder="Initial Supply"
                             value={formData.init_supply}
                             onChange={handleInputChange}
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                             required
                           />
                           <Wallet className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
