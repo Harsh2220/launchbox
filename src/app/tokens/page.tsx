@@ -85,9 +85,8 @@ export default function TokensPage() {
                     24h Change
                   </p>
                   <p
-                    className={`text-lg font-semibold flex items-center ${
-                      true ? "text-green-500" : "text-red-500"
-                    }`}
+                    className={`text-lg font-semibold flex items-center ${true ? "text-green-500" : "text-red-500"
+                      }`}
                   >
                     {true ? (
                       <TrendingUp className="w-4 h-4 mr-1" />
