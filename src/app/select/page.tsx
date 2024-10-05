@@ -32,20 +32,20 @@ export default function ChooseAction() {
                 transition-all duration-300 ease-in-out"
           >
             <ActionItem
-              icon={<PlusIcon />}
-              subtitle="Create a new token on Solana and EVM chains"
-              title="Launch New Token"
-              onClick={onCreate}
+              icon={<ArrowRightLeft />}
+              title="Migrate Existing Token"
+              subtitle="Transfer your EVM token to Solana"
+              onClick={onMigrate}
             />
             <Separator
               orientation="horizontal"
               className="bg-white my-10 opacity-50 h-[0.5px] mx-auto"
             />
             <ActionItem
-              icon={<ArrowRightLeft />}
-              title="Migrate Existing Token"
-              subtitle="Transfer your EVM token to Solana"
-              onClick={onMigrate}
+              icon={<PlusIcon />}
+              subtitle="Create a new token on Solana and EVM chains"
+              title="Launch New Token"
+              onClick={onCreate}
             />
           </div>
         </div>

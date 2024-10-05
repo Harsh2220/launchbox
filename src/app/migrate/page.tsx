@@ -14,6 +14,7 @@ import {
 import { BookImage, DollarSign, UserRound, Wallet } from "lucide-react";
 import { useAppKit } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
+import { Slider } from "@/components/ui/slider";
 
 const steps = ["Token Details", "Migration Setup", "Confirmation"];
 const hubChains = [
@@ -30,6 +31,7 @@ interface FormData {
   hub_chain: string;
   new_owner: string;
   tokenAddress: string;
+  outboundSupply: string;
   isOneWay: boolean;
 }
 
@@ -44,6 +46,7 @@ export default function Migrate() {
     hub_chain: "",
     new_owner: "",
     tokenAddress: "",
+    outboundSupply: "50",
     isOneWay: false,
   });
   const router = useRouter();
@@ -60,6 +63,13 @@ export default function Migrate() {
       [name]:
         type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
+  };
+
+  const handleSliderChange = (name: string) => (value: number[]) => {
+    const newValue = value[0].toString();
+    handleInputChange({
+      target: { name, value: newValue, type: "range" },
+    } as React.ChangeEvent<HTMLInputElement>);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -162,7 +172,6 @@ export default function Migrate() {
                           />
                           <BookImage className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
-
                         <Select
                           // onValueChange={handleHubChainChange}
                           value={formData.hub_chain}
@@ -178,18 +187,6 @@ export default function Migrate() {
                             ))}
                           </SelectContent>
                         </Select>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            name="new_owner"
-                            placeholder="New Owner Address"
-                            value={formData.new_owner}
-                            onChange={handleInputChange}
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
-                            required
-                          />
-                          <Wallet className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
-                        </div>
                       </div>
                     )}
                     {index === 1 && (
@@ -203,6 +200,54 @@ export default function Migrate() {
                           className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-gray-900 placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
                           required
                         />
+                        {!formData.isOneWay && (
+                          <div className="space-y-6 mt-8 mb-4">
+                            <div>
+                              <label
+                                htmlFor="outbound-slider"
+                                className="block text-md font-medium text-gray-200 mb-2"
+                              >
+                                <span className="font-bold">
+                                  Outbound Supply
+                                </span>
+                                : {formData.outboundSupply}%
+                              </label>
+                              <Slider
+                                id="outbound-slider"
+                                value={[parseInt(formData.outboundSupply) || 0]}
+                                onValueChange={handleSliderChange(
+                                  "outboundSupply"
+                                )}
+                                max={100}
+                                step={1}
+                                className="mt-2 px-2"
+                              />
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="inbound-slider"
+                                className="block text-md font-medium text-gray-200 mb-2"
+                              >
+                                Inbound Supply:{" "}
+                                {100 - parseInt(formData.outboundSupply)}%
+                              </label>
+                              <Slider
+                                id="inbound-slider"
+                                value={[
+                                  100 - parseInt(formData.outboundSupply),
+                                ]}
+                                onValueChange={(value) =>
+                                  handleSliderChange("outboundSupply")([
+                                    100 - value[0],
+                                  ])
+                                }
+                                max={100}
+                                step={1}
+                                className="mt-2 px-2"
+                              />
+                            </div>
+                          </div>
+                        )}
                         <div className="flex items-center space-x-2 mt-2">
                           <input
                             type="checkbox"
