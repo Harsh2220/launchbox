@@ -1,21 +1,28 @@
 "use client";
+import { useConfigStore } from "@/store/configStore";
 import getConfig from "@/utils/api/getConfig";
 import WormholeConnect from "@wormhole-foundation/wormhole-connect";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function Transfer() {
-  const [config, setConfig] = useState(null);
+  const { activeDeploymentConfig, setActiveDeploymentConfig } =
+    useConfigStore();
   const { id } = useParams();
-  console.log(id);
   useEffect(() => {
-    if (!id) return;
+    if (activeDeploymentConfig) return;
     getConfig(id as string).then((data) => {
-      setConfig(data);
+      setActiveDeploymentConfig(data);
     });
   }, [id]);
 
-  return <div>{config && <WormholeConnect config={config} />}</div>;
+  return (
+    <div>
+      {activeDeploymentConfig && (
+        <WormholeConnect config={activeDeploymentConfig} />
+      )}
+    </div>
+  );
 }
 
 export default Transfer;

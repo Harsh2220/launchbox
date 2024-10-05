@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
-        const response = await fetch(`${process.env.BASE_URL}/getAllTokens`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/getAllTokens`, {
             method: "GET",
         })
 
