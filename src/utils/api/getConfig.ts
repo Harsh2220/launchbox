@@ -10,7 +10,7 @@ export default async function getConfig(id: string) {
         body: JSON.stringify({
           token_id: id,
         }),
-      }
+      },
     );
 
     if (!res.ok) {

@@ -1,20 +1,19 @@
 "use client";
 import getConfig from "@/utils/api/getConfig";
 import WormholeConnect from "@wormhole-foundation/wormhole-connect";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function Transfer() {
   const [config, setConfig] = useState(null);
-  const params = useParams();
-
-  const { id } = useRouter<{ id: string }>();
-
+  const { id } = useParams();
+  console.log(id)
   useEffect(() => {
-    getConfig(id).then((data) => {
+    if (!id) return
+    getConfig(id as string).then((data) => {
       setConfig(data);
     });
-  }, []);
+  }, [id]);
 
   return <div>{config && <WormholeConnect config={config} />}</div>;
 }
