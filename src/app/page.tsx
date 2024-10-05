@@ -2,6 +2,7 @@
 
 import { BackgroundBeams } from "@/components/BackgroundBeams";
 import { BentoDemo } from "@/components/FeaturesGrid";
+import Footer from "@/components/Footer";
 import SectionBtn from "@/components/SectionBtn";
 import ToolTip from "@/components/ToolTip";
 import { useRouter } from "next/navigation";
@@ -14,7 +15,7 @@ export default function Home() {
     router.push("/select");
   };
   return (
-    <div className="min-h-screen bg-primary-gradient ">
+    <div className="min-h-screen bg-primary-gradient">
       <div className="relative pb-40">
         <BackgroundBeams />
         <ToolTip />
@@ -41,6 +42,7 @@ export default function Home() {
         <SectionBtn content="Our Features" />
         <BentoDemo />
       </div>
+      <Footer />
     </div>
   );
 }

@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 function Transfer() {
   const [config, setConfig] = useState(null);
   const { id } = useParams();
-  console.log(id)
+  console.log(id);
   useEffect(() => {
-    if (!id) return
+    if (!id) return;
     getConfig(id as string).then((data) => {
       setConfig(data);
     });

@@ -12,12 +12,14 @@ import {
 import getAllTokens from "@/utils/api/getAllTokens";
 import { useQuery } from "@tanstack/react-query";
 import { Search, TrendingDown, TrendingUp } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function TokensPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["all-tokens"],
     queryFn: () => getAllTokens(),
   });
+  const router = useRouter();
 
   if (isLoading) return;
 
@@ -108,7 +110,13 @@ export default function TokensPage() {
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
               Launched on 22th Sep 2024
             </p>
-            <Button className="w-full mt-auto" variant={"outline"}>
+            <Button
+              className="w-full mt-auto"
+              variant={"outline"}
+              onClick={() => {
+                router.push(`/transfer/${token.id}`);
+              }}
+            >
               Swap
             </Button>
           </div>
