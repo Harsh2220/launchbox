@@ -97,12 +97,12 @@ export default function LaunchMultiChainToken() {
       console.log("tokenId", tokenId);
       console.log("chains", formData.deployment_chains);
 
-      // CreateMultichainToken({
-      //   token_id: tokenId,
-      //   chainNames: formData.deployment_chains,
-      //   tokenName: formData.token_name,
-      //   tokenSymbol: formData.symbol,
-      // });
+      CreateMultichainToken({
+        token_id: tokenId,
+        chainNames: formData.deployment_chains,
+        tokenName: formData.token_name,
+        tokenSymbol: formData.symbol,
+      });
       setCurrentStep(currentStep + 1);
     } else {
       // Handle final submission
