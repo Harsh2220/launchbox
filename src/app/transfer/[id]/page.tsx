@@ -24,5 +24,3 @@ function Transfer() {
     </div>
   );
 }
-
-export default Transfer;
