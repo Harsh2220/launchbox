@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
@@ -16,6 +16,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import registerNewToken from "@/utils/api/registerNewToken";
 import { log } from "console";
 import CreateMultichainToken from "@/utils/api/createMultichainToken";
+import { MultiStepLoader } from "@/components/ui/multi-step-loader";
+import { LoadingStates } from "@/utils/constants";
+import getStatus from "@/utils/api/getStatus";
+import CreateMockMigration from "@/utils/api/mockMigrate";
 
 const steps = ["Token Details", "Deployment Chains", "Confirmation"];
 const deploymentChains = [
@@ -48,11 +52,48 @@ export default function LaunchMultiChainToken() {
     init_supply: "",
     deployment_chains: [],
   });
+
   const router = useRouter();
 
   const { open } = useAppKit();
   const { isConnected, address } = useAccount();
   const [tokenId, setTokenId] = useState("");
+  const [currentState, setCurrentState] = useState(0);
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const getStateIndexFromStatusText = (statusText: string) => {
+    return LoadingStates.findIndex((state) => state.text === statusText);
+  };
+
+  const pollStatus = async () => {
+    try {
+      console.log("here in poll status");
+
+      const response = await getStatus(tokenId);
+      console.log("resposne from get status", response);
+
+      const newStateIndex = getStateIndexFromStatusText(response.status);
+
+      if (newStateIndex !== -1) {
+        setCurrentState(newStateIndex);
+
+        // If we've reached the last state, stop polling
+        if (newStateIndex === LoadingStates.length - 1) {
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+          }
+        }
+      }
+    } catch (error) {
+      console.log("Error polling status:", error);
+    }
+  };
+
+  const startPolling = () => {
+    setCurrentState(0); // Reset to initial state
+    intervalRef.current = setInterval(pollStatus, 1000); // Poll every 5 seconds
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -97,6 +138,8 @@ export default function LaunchMultiChainToken() {
       console.log("tokenId", tokenId);
       console.log("chains", formData.deployment_chains);
 
+      // await CreateMockMigration(tokenId);
+
       CreateMultichainToken({
         token_id: tokenId,
         chainNames: formData.deployment_chains,
@@ -104,10 +147,7 @@ export default function LaunchMultiChainToken() {
         tokenSymbol: formData.symbol,
       });
       setCurrentStep(currentStep + 1);
-    } else {
-      // Handle final submission
-      console.log("Final form data:", formData);
-      // Implement your submission logic here
+      startPolling();
     }
   };
 
@@ -239,7 +279,7 @@ export default function LaunchMultiChainToken() {
                     )}
                     {index === 2 && (
                       <div className="text-white">
-                        <h2 className="text-xl mb-4">Launch Summary</h2>
+                        {/* <h2 className="text-xl mb-4">Launch Summary</h2>
                         <ul className="list-disc list-inside space-y-2">
                           <li>Token Name: {formData.token_name}</li>
                           <li>Symbol: {formData.symbol}</li>
@@ -248,7 +288,12 @@ export default function LaunchMultiChainToken() {
                             Deployment Chains:{" "}
                             {formData.deployment_chains.join(", ")}
                           </li>
-                        </ul>
+                        </ul> */}
+                        <MultiStepLoader
+                          loadingStates={LoadingStates}
+                          loading
+                          loadingState={currentState}
+                        />
                       </div>
                     )}
                   </motion.div>
@@ -275,21 +320,14 @@ export default function LaunchMultiChainToken() {
               className="bg-gray-100 text-gray-900 font-semibold py-2 px-6 rounded-full hover:bg-white transition duration-300 ml-auto"
               onClick={handleSubmit}
             >
-              {isConnected ? "Next" : "Connect Wallet"}
+              {isConnected
+                ? currentStep === 0
+                  ? "Next"
+                  : "Launch Token"
+                : "Connect Wallet"}
             </motion.button>
           ) : (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-gray-100 text-gray-900 font-semibold py-2 px-6 rounded-full hover:bg-white transition duration-300 ml-auto"
-              onClick={() => {
-                // Handle final submission
-                console.log("Final submission:", formData);
-                router.push("/");
-              }}
-            >
-              Launch Token
-            </motion.button>
+            <></>
           )}
         </div>
       </div>
