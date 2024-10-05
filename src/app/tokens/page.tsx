@@ -9,81 +9,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import getAllTokens from "@/utils/api/getAllTokens";
+import { useQuery } from "@tanstack/react-query";
 import { Search, TrendingDown, TrendingUp } from "lucide-react";
-import { useState } from "react";
-
-const tokens = [
-  {
-    id: 1,
-    name: "Token A",
-    symbol: "TKA",
-    price: 0.5,
-    priceChange: 5.2,
-    marketCap: 1000000,
-    launchDate: "2023-01-15",
-    volume: 500000,
-    image:
-      "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/ethereum-eth-icon.png",
-  },
-  {
-    id: 2,
-    name: "Token B",
-    symbol: "TKB",
-    price: 1.2,
-    priceChange: -2.8,
-    marketCap: 5000000,
-    launchDate: "2023-02-20",
-    volume: 1500000,
-    image: "https://cryptologos.cc/logos/bitcoin-btc-logo.png",
-  },
-  {
-    id: 3,
-    name: "Token C",
-    symbol: "TKC",
-    price: 0.8,
-    priceChange: 1.5,
-    marketCap: 3000000,
-    launchDate: "2023-03-10",
-    volume: 800000,
-    image: "https://cryptologos.cc/logos/cardano-ada-logo.png",
-  },
-  {
-    id: 4,
-    name: "Token D",
-    symbol: "TKD",
-    price: 2.5,
-    priceChange: -0.7,
-    marketCap: 10000000,
-    launchDate: "2023-04-05",
-    volume: 2000000,
-    image: "https://cryptologos.cc/logos/solana-sol-logo.png",
-  },
-  {
-    id: 5,
-    name: "Token E",
-    symbol: "TKE",
-    price: 0.3,
-    priceChange: 10.1,
-    marketCap: 500000,
-    launchDate: "2023-05-12",
-    volume: 300000,
-    image: "https://cryptologos.cc/logos/polkadot-new-dot-logo.png",
-  },
-  {
-    id: 6,
-    name: "Token F",
-    symbol: "TKF",
-    price: 1.8,
-    priceChange: -1.2,
-    marketCap: 7000000,
-    launchDate: "2023-06-18",
-    volume: 1200000,
-    image: "https://cryptologos.cc/logos/chainlink-link-logo.png",
-  },
-];
 
 export default function TokensPage() {
-  const [isGridView, setIsGridView] = useState(true);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["all-tokens"],
+    queryFn: () => getAllTokens(),
+  });
+
+  if (isLoading) return;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -110,27 +46,23 @@ export default function TokensPage() {
       </div>
 
       <div
-        className={`grid gap-6 ${
-          isGridView
-            ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-            : "grid-cols-1"
-        }`}
+        className={`grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`}
       >
-        {tokens.map((token) => (
+        {data?.map((token) => (
           <div
             key={token.id}
             className="border border-border rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-300 flex flex-col"
           >
             <div className="flex items-center mb-4">
               <img
-                src={token.image}
-                alt={token.name}
+                src={token.image_url}
+                alt={token.token_name}
                 width={48}
                 height={48}
                 className="rounded-full mr-4 object-contain"
               />
               <div>
-                <h2 className="text-xl font-semibold">{token.name}</h2>
+                <h2 className="text-xl font-semibold">{token.token_name}</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {token.symbol}
                 </p>
@@ -141,9 +73,7 @@ export default function TokensPage() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   Price
                 </p>
-                <p className="text-lg font-semibold">
-                  ${token.price.toFixed(2)}
-                </p>
+                <p className="text-lg font-semibold">$0.02</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -151,36 +81,32 @@ export default function TokensPage() {
                 </p>
                 <p
                   className={`text-lg font-semibold flex items-center ${
-                    token.priceChange >= 0 ? "text-green-500" : "text-red-500"
+                    true ? "text-green-500" : "text-red-500"
                   }`}
                 >
-                  {token.priceChange >= 0 ? (
+                  {true ? (
                     <TrendingUp className="w-4 h-4 mr-1" />
                   ) : (
                     <TrendingDown className="w-4 h-4 mr-1" />
                   )}
-                  {token.priceChange.toFixed(2)}%
+                  2%
                 </p>
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   Market Cap
                 </p>
-                <p className="text-lg font-semibold">
-                  ${token.marketCap.toLocaleString()}
-                </p>
+                <p className="text-lg font-semibold">$1M</p>
               </div>
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   Volume (24h)
                 </p>
-                <p className="text-lg font-semibold">
-                  ${token.volume.toLocaleString()}
-                </p>
+                <p className="text-lg font-semibold">$2M</p>
               </div>
             </div>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-              Launched on {token.launchDate}
+              Launched on 22th Sep 2024
             </p>
             <Button className="w-full mt-auto" variant={"outline"}>
               Swap
