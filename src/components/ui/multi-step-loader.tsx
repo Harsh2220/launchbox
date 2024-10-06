@@ -69,15 +69,15 @@ const LoaderCore = ({
                   className={cn(
                     "text-black dark:text-white",
                     value === index &&
-                      "text-black dark:text-lime-500 opacity-100"
+                      "text-black dark:text-white opacity-100"
                   )}
                 />
               )}
             </div>
             <span
               className={cn(
-                "text-black dark:text-white",
-                value === index && "text-black dark:text-lime-500 opacity-100"
+                "text-black dark:text-gray-400",
+                value === index && "text-black dark:text-white opacity-100"
               )}
             >
               {loadingState.text}

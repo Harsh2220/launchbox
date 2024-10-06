@@ -7,19 +7,22 @@ import {
   NetworkBase,
   NetworkOptimism,
   NetworkArbitrumOne,
-  NetworkSolana,
 } from "@web3icons/react";
-import { BookImage, DollarSign, UserRound, Wallet } from "lucide-react";
+import {
+  BookImage,
+  DollarSign,
+  Loader2,
+  UserRound,
+  Wallet,
+} from "lucide-react";
 import { useAppKit } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 import { Checkbox } from "@/components/ui/checkbox";
 import registerNewToken from "@/utils/api/registerNewToken";
-import { log } from "console";
 import CreateMultichainToken from "@/utils/api/createMultichainToken";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 import { LoadingStates } from "@/utils/constants";
 import getStatus from "@/utils/api/getStatus";
-import CreateMockMigration from "@/utils/api/mockMigrate";
 
 const steps = ["Token Details", "Deployment Chains", "Confirmation"];
 const deploymentChains = [
@@ -53,12 +56,12 @@ export default function LaunchMultiChainToken() {
     deployment_chains: [],
   });
 
-  const router = useRouter();
-
+  const [isLoading, setIsLoading] = useState(false);
   const { open } = useAppKit();
   const { isConnected, address } = useAccount();
   const [tokenId, setTokenId] = useState("");
   const [currentState, setCurrentState] = useState(0);
+  const router = useRouter();
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -82,6 +85,7 @@ export default function LaunchMultiChainToken() {
         if (newStateIndex === LoadingStates.length - 1) {
           if (intervalRef.current) {
             clearInterval(intervalRef.current);
+            router.push(`/transfer/${tokenId}`);
           }
         }
       }
@@ -106,8 +110,6 @@ export default function LaunchMultiChainToken() {
   };
 
   const handleChainSelection = (chainId: string) => {
-    console.log("got this chain", chainId);
-
     setFormData((prev) => {
       const updatedChains = prev.deployment_chains.includes(chainId)
         ? prev.deployment_chains.filter((id) => id !== chainId)
@@ -118,37 +120,57 @@ export default function LaunchMultiChainToken() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      setIsLoading(true);
+      if (!isConnected) {
+        open();
+        return;
+      }
+      if (currentStep === 0) {
+        console.log("form data", formData);
+        const response = await registerNewToken({
+          image_url: formData.image_url,
+          new_owner: address as `0x${string}`,
+          symbol: formData.symbol,
+          token_name: formData.token_name,
+        });
+        console.log("tokenId", response.token_id);
+        setTokenId(response.token_id);
+
+        setCurrentStep(currentStep + 1);
+      } else if (currentStep === 1) {
+        console.log("tokenId", tokenId);
+        console.log("chains", formData.deployment_chains);
+
+        // await CreateMockMigration(tokenId);
+
+        CreateMultichainToken({
+          token_id: tokenId,
+          chainNames: formData.deployment_chains,
+          tokenName: formData.token_name,
+          tokenSymbol: formData.symbol,
+        });
+        setCurrentStep(currentStep + 1);
+        startPolling();
+      }
+    } catch (error) {
+      console.log("error handling submit");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const ButtonContent = () => {
+    if (isLoading) {
+      return <Loader2 className="w-5 h-5 animate-spin" />;
+    }
     if (!isConnected) {
-      open();
-      return;
+      return "Connect Wallet";
     }
     if (currentStep === 0) {
-      console.log("form data", formData);
-      const response = await registerNewToken({
-        image_url: formData.image_url,
-        new_owner: address as `0x${string}`,
-        symbol: formData.symbol,
-        token_name: formData.token_name,
-      });
-      console.log("tokenId", response.token_id);
-      setTokenId(response.token_id);
-
-      setCurrentStep(currentStep + 1);
-    } else if (currentStep === 1) {
-      console.log("tokenId", tokenId);
-      console.log("chains", formData.deployment_chains);
-
-      // await CreateMockMigration(tokenId);
-
-      CreateMultichainToken({
-        token_id: tokenId,
-        chainNames: formData.deployment_chains,
-        tokenName: formData.token_name,
-        tokenSymbol: formData.symbol,
-      });
-      setCurrentStep(currentStep + 1);
-      startPolling();
+      return "Next";
     }
+    return "Launch Token";
   };
 
   const fadeVariants = {
@@ -225,16 +247,18 @@ export default function LaunchMultiChainToken() {
                           />
                           <DollarSign className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
                         </div>
-                        <div className="relative">
+                        <div className="relative flex items-center w-full">
                           <input
                             type="text"
                             name="image_url"
                             placeholder="Image URL"
                             value={formData.image_url}
                             onChange={handleInputChange}
-                            className="w-full h-12 px-4 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                            className="w-full h-12 pl-4 pr-12 py-3 rounded-xl bg-[#2F3035] border-[#5C5C5C] border-[1px] text-white placeholder-[#99A3AF] text-lg focus:outline-none focus:ring-2 focus:ring-gray-400 truncate"
                           />
-                          <BookImage className="absolute right-6 top-3 h-6 w-6 text-[#99A3AF]" />
+                          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <BookImage className="h-6 w-6 text-[#99A3AF]" />
+                          </div>
                         </div>
                         <div className="relative">
                           <input
@@ -320,11 +344,7 @@ export default function LaunchMultiChainToken() {
               className="bg-gray-100 text-gray-900 font-semibold py-2 px-6 rounded-full hover:bg-white transition duration-300 ml-auto"
               onClick={handleSubmit}
             >
-              {isConnected
-                ? currentStep === 0
-                  ? "Next"
-                  : "Launch Token"
-                : "Connect Wallet"}
+              <ButtonContent />
             </motion.button>
           ) : (
             <></>

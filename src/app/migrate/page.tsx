@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { BookImage, DollarSign, UserRound, Wallet } from "lucide-react";
+import { BookImage, DollarSign, Loader2, UserRound } from "lucide-react";
 import { useAppKit } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 import { Slider } from "@/components/ui/slider";
@@ -43,6 +43,7 @@ interface FormData {
 
 export default function Migrate() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     token_name: "",
     symbol: "",
@@ -65,6 +66,19 @@ export default function Migrate() {
   const { open } = useAppKit();
   const { isConnected, address } = useAccount();
 
+  const ButtonContent = () => {
+    if (isLoading) {
+      return <Loader2 className="w-5 h-5 animate-spin" />;
+    }
+    if (!isConnected) {
+      return "Connect Wallet";
+    }
+    if (currentStep === 0) {
+      return "Next";
+    }
+    return "Launch Token";
+  };
+
   const getStateIndexFromStatusText = (statusText: string) => {
     return LoadingStates.findIndex((state) => state.text === statusText);
   };
@@ -85,6 +99,7 @@ export default function Migrate() {
         if (newStateIndex === LoadingStates.length - 1) {
           if (intervalRef.current) {
             clearInterval(intervalRef.current);
+            router.push(`/transfer/${tokenId}`);
           }
         }
       }
@@ -125,38 +140,45 @@ export default function Migrate() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isConnected) {
-      open();
-      return;
-    }
-    if (currentStep < 1) {
-      console.log("form data", formData);
-      const response = await registerMigration({
-        image_url: formData.image_url,
-        new_owner: address as `0x${string}`,
-        symbol: formData.symbol,
-        token_name: formData.token_name,
-        hub_chain: formData.hub_chain,
-        decimals: parseInt(formData.decimals),
-        init_supply: parseInt(formData.init_supply),
-      });
-      console.log("tokenId", response.migrationId);
-      setTokenId(response.migrationId);
-      setCurrentStep(currentStep + 1);
-    } else {
-      // Handle final submission
-      await initiateMigrate({
-        evmOwnerAddress: address as `0x${string}`,
-        hubChain: formData.hub_chain,
-        isOneWay: true,
-        migrationId: tokenId,
-        name: formData.token_name,
-        solOwnerPubKey: formData.solPubKey,
-        tokenAddress: formData.tokenAddress,
-      });
-      console.log("Final form data:", formData);
-      setCurrentStep(currentStep + 1);
-      startPolling();
+    try {
+      setIsLoading(true);
+      if (!isConnected) {
+        open();
+        return;
+      }
+      if (currentStep < 1) {
+        console.log("form data", formData);
+        const response = await registerMigration({
+          image_url: formData.image_url,
+          new_owner: address as `0x${string}`,
+          symbol: formData.symbol,
+          token_name: formData.token_name,
+          hub_chain: formData.hub_chain,
+          decimals: parseInt(formData.decimals),
+          init_supply: parseInt(formData.init_supply),
+        });
+        console.log("tokenId", response.migrationId);
+        setTokenId(response.migrationId);
+        setCurrentStep(currentStep + 1);
+      } else {
+        // Handle final submission
+        await initiateMigrate({
+          evmOwnerAddress: address as `0x${string}`,
+          hubChain: formData.hub_chain,
+          isOneWay: true,
+          migrationId: tokenId,
+          name: formData.token_name,
+          solOwnerPubKey: formData.solPubKey,
+          tokenAddress: formData.tokenAddress,
+        });
+        console.log("Final form data:", formData);
+        setCurrentStep(currentStep + 1);
+        startPolling();
+      }
+    } catch (error) {
+      console.log("error submitting form");
+    } finally {
+      setIsLoading(false);
     }
   };
   const fadeVariants = {
@@ -395,11 +417,7 @@ export default function Migrate() {
               className="bg-gray-100 text-gray-900 font-semibold py-2 px-6 rounded-full hover:bg-white transition duration-300 ml-auto"
               onClick={handleSubmit}
             >
-              {currentStep === 1
-                ? "Start Migration"
-                : isConnected
-                ? "Next"
-                : "Connect Wallet"}
+              <ButtonContent />
             </motion.button>
           ) : (
             <></>
