@@ -13,7 +13,7 @@ function Navbar() {
   return (
     <nav className="py-4 px-12 flex justify-between items-center">
       <a className="flex items-center" href="/">
-        <img src="/assets/Logo.png" className="h-8 w-8 rounded-sm mr-2" />
+        <img src="/assets/logo.png" className="h-8 w-8 rounded-sm mr-2" />
         <div className="text-white text-2xl font-bold">LaunchBox</div>
       </a>
       <button
