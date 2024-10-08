@@ -12,7 +12,7 @@ export default function ChooseAction() {
   };
 
   const onCreate = () => {
-    router.push("create");
+    router.push("launch");
   };
 
   return (
