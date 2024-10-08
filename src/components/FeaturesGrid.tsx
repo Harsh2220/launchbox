@@ -14,7 +14,7 @@ const features = [
     ),
     name: "Minting New Tokens",
     description:
-      "Create and launch new tokens directly on the Solana blockchain",
+      "Create and launch new tokens directly on the Solana blockchain regardless of your project's native chain",
     href: "#",
     cta: "Learn more",
     className: "col-span-3 lg:col-span-1",
@@ -60,7 +60,7 @@ const features = [
     ),
     name: "Native Bridge",
     description:
-      "Transfer your tokens from etherum to solana natively without any bridging or high slippage",
+      "Your token is now native to multiple chains, & it can travel natively across them",
     href: "#",
     cta: "Learn more",
     className: "col-span-3 lg:col-span-2",
@@ -73,7 +73,7 @@ const features = [
       <Share2Icon className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
     ),
     name: "Migrations",
-    description: "We support migration from any EVM chains to Solana",
+    description: "Migrate any EVM token to Solana",
     href: "#",
     cta: "Learn more",
     className: "col-span-3 lg:col-span-2",

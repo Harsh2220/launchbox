@@ -19,11 +19,7 @@ function Navbar() {
       <button
         className="px-4 py-2 text-gray-300 rounded-xl flex items-center space-x-2 overflow-hidden bg-[#222320] border-white border-[0.1px] border-opacity-20 bg-opacity-95"
         onClick={() => {
-          if (isConnected) {
-            router.push("/select");
-          } else {
-            open();
-          }
+          router.push("/select");
         }}
       >
         <span className="relative z-10 text-sm font-medium font-inter">
