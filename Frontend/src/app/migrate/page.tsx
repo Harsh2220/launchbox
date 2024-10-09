@@ -20,6 +20,7 @@ import initiateMigrate from "@/utils/api/migrate";
 import getStatus from "@/utils/api/getStatus";
 import { LoadingStates } from "@/utils/constants";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
+import CreateMockMigration from "@/utils/api/mockMigrate";
 
 const steps = ["Token Details", "Migration Setup", "Status"];
 const hubChains = [
@@ -99,7 +100,7 @@ export default function Migrate() {
         if (newStateIndex === LoadingStates.length - 1) {
           if (intervalRef.current) {
             clearInterval(intervalRef.current);
-            router.push(`/transfer/${tokenId}`);
+            router.push(`/transfer/b1e28eb7-0b4e-4277-a93a-a4db934cf09a`);
           }
         }
       }
@@ -162,15 +163,16 @@ export default function Migrate() {
         setCurrentStep(currentStep + 1);
       } else {
         // Handle final submission
-        await initiateMigrate({
-          evmOwnerAddress: address as `0x${string}`,
-          hubChain: formData.hub_chain,
-          isOneWay: true,
-          migrationId: tokenId,
-          name: formData.token_name,
-          solOwnerPubKey: formData.solPubKey,
-          tokenAddress: formData.tokenAddress,
-        });
+        // await initiateMigrate({
+        //   evmOwnerAddress: address as `0x${string}`,
+        //   hubChain: formData.hub_chain,
+        //   isOneWay: true,
+        //   migrationId: tokenId,
+        //   name: formData.token_name,
+        //   solOwnerPubKey: formData.solPubKey,
+        //   tokenAddress: formData.tokenAddress,
+        // });
+        await CreateMockMigration(tokenId);
         console.log("Final form data:", formData);
         setCurrentStep(currentStep + 1);
         startPolling();
