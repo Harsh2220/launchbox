@@ -1,0 +1,28 @@
+{
+  "name": "launchbox-backend",
+  "module": "index.ts",
+  "scripts": {
+    "dev": "bun run --watch ./index.ts"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "@solana/spl-token": "0.1.8",
+    "@solana/web3.js": "^1.95.3",
+    "@types/bn.js": "^5.1.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "bn.js": "^5.2.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "prisma": "^5.20.0",
+    "viem": "^2.21.15"
+  }
+}
