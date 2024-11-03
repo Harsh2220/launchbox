@@ -10,7 +10,7 @@ import { AnimatedBeamSingleDemo } from "./ui/animated-beam-single-output";
 const features = [
   {
     Icon: (
-      <PlusCircle className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+      <PlusCircle className="h-12 w-12 origin-left transform-gpu text-white transition-all duration-300 ease-in-out group-hover:scale-75" />
     ),
     name: "Minting New Tokens",
     description:
@@ -56,7 +56,7 @@ const features = [
   },
   {
     Icon: (
-      <Route className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+      <Route className="h-12 w-12 origin-left transform-gpu text-white transition-all duration-300 ease-in-out group-hover:scale-75" />
     ),
     name: "Native Bridge",
     description:
@@ -70,7 +70,7 @@ const features = [
   },
   {
     Icon: (
-      <Share2Icon className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+      <Share2Icon className="h-12 w-12 origin-left transform-gpu text-white transition-all duration-300 ease-in-out group-hover:scale-75" />
     ),
     name: "Migrations",
     description: "Migrate any EVM token to Solana",
@@ -83,7 +83,7 @@ const features = [
   },
   {
     Icon: (
-      <Coins className="h-12 w-12 origin-left transform-gpu text-neutral-700 transition-all duration-300 ease-in-out group-hover:scale-75" />
+      <Coins className="h-12 w-12 origin-left transform-gpu text-white transition-all duration-300 ease-in-out group-hover:scale-75" />
     ),
     name: "Entry to solana",
     description: "Seamlessly deploy your EVM tokens to Solana",

@@ -49,7 +49,7 @@ export default function RootLayout({
   const cookies = headers().get("cookie");
   return (
     <html lang="en">
-      <body className={`${sfPro.className} antialiased`}>
+      <body className={`${sfPro.className} antialiased bg-hero bg-cover`}>
         <AppKitProvider cookies={cookies}>
           <ThemeProvider
             attribute="class"

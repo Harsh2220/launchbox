@@ -86,6 +86,9 @@ const config: Config = {
         marquee: "marquee var(--duration) infinite linear",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
       },
+      backgroundImage: {
+        'hero': "url('/landing-bg.png')",
+      },
     },
   },
   plugins: [addVariablesForColors, require("tailwindcss-animate")],

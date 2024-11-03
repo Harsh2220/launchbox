@@ -16,7 +16,7 @@ export default function ChooseAction() {
   };
 
   return (
-    <div className="min-h-screen bg-primary-gradient mt-8">
+    <div className="min-h-screen mt-8">
       <div className="relative pb-40">
         <div className="text-white py-4 px-4 md:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-semibold mb-4 leading-tight font-inter">

@@ -13,7 +13,7 @@ export default function Home() {
     router.push("/tokens");
   };
   return (
-    <div className="min-h-screen bg-primary-gradient">
+    <div className="min-h-screen">
       <div className="relative pb-40">
         <ToolTip />
         <div className="text-white py-4 px-4 md:px-8 text-center">
