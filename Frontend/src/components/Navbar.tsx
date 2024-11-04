@@ -17,7 +17,7 @@ function Navbar() {
         <div className="text-white text-2xl font-bold">LaunchBox</div>
       </a>
       <button
-        className="px-4 py-2 text-gray-300 rounded-xl flex items-center space-x-2 overflow-hidden bg-[#222320] border-white border-[0.1px] border-opacity-20 bg-opacity-95"
+        className="px-4 py-2 text-black rounded-xl flex items-center space-x-2 overflow-hidden bg-white font-extrabold"
         onClick={() => {
           router.push("/select");
         }}
